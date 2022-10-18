@@ -9,27 +9,30 @@
       </div>
       <h4>3,000</h4>
       <q-btn color="primary" icon="img:icons/box.svg" label="New card" class="gt-md" no-caps @click="addNewCard" />
-      <q-btn :flat="true" color="primary" icon="img:icons/box.svg" label="New card" class="lt-md" no-caps @click="addNewCard" />
+      <q-btn :flat="true" color="primary" icon="img:icons/box.svg" label="New card" class="lt-md" no-caps
+        @click="addNewCard" />
     </div>
     <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
       narrow-indicator>
-      <q-tab name="mails" label="My debit cards"  no-caps />
-      <q-tab name="alarms" label="All company cards"  no-caps />
+      <q-tab name="mails" label="My debit cards" no-caps />
+      <q-tab name="alarms" label="All company cards" no-caps />
     </q-tabs>
     <q-card class="q-mt-sm">
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="mails">
           <div class="row gt-md">
             <div class="col">
-              <q-card :bordered="true" v-for="card in cards" :key="card.number">
-                <q-card-section>
-                  <div>{{card.holder}}</div>
-                  <div>{{card.number_m}}</div>
-                  <div>{{card.expiry}}</div>
-                  <div>{{card.cvv_m}}</div>
-                </q-card-section>
-              </q-card>
-              <q-space />
+              <div class="q-pa-md">
+                <q-carousel v-model="slide" swipeable animated :control-type="controlType" control-color="purple"
+                navigation padding height="150px" class="text-purple rounded-borders">
+                  <q-carousel-slide v-for="(card, index) in cards" :key="index" :name="index" class="column no-wrap flex-center">
+                    <div>{{card.holder}}</div>
+                    <div>{{card.number_m}}</div>
+                    <div>{{card.expiry}}</div>
+                    <div>{{card.cvv_m}}</div>
+                  </q-carousel-slide>
+                </q-carousel>
+              </div>
               <div class="toggles row justify-between text-center">
                 <q-item tag="label" class="col-auto">
                   <q-item-section>
@@ -47,7 +50,8 @@
                 </q-item>
                 <q-item tag="label" class="col-auto">
                   <q-item-section>
-                    <q-checkbox size="64px" v-model="gpay" checked-icon="img:icons/Gpay1.svg" unchecked-icon="img:icons/Gpay1.svg" />
+                    <q-checkbox size="64px" v-model="gpay" checked-icon="img:icons/Gpay1.svg"
+                      unchecked-icon="img:icons/Gpay1.svg" />
                     <q-item-label>Add to Gpay</q-item-label>
                   </q-item-section>
                 </q-item>
@@ -104,34 +108,59 @@ export default {
   name: 'PageIndex',
   data() {
     return {
+      controlType: 'flat',
+      slide: 1,
       freeze: ref(true),
       limit: ref(true),
       gpay: ref(true),
       replace: ref(true),
       cancel: ref(true),
       tab: 'mails',
-      newCard:'',
+      newCard: '',
       cards: [{
         number: '1111 1111 1111 1111',
         number_m: '**** **** **** 1111',
         holder: 'Mark Henry',
-        expiry:'12/25',
-        cvv:'007',
+        expiry: '12/25',
+        cvv: '001',
         cvv_m: '***',
         frozen: false
-      }]
+      },
+      {
+        number: '1111 1111 1111 2222',
+        number_m: '**** **** **** 2222',
+        holder: 'Mark Henry',
+        expiry: '12/25',
+        cvv: '002',
+        cvv_m: '***',
+        frozen: false
+      },
+      {
+        number: '1111 1111 1111 3333',
+        number_m: '**** **** **** 3333',
+        holder: 'Mark Henry',
+        expiry: '12/25',
+        cvv: '003',
+        cvv_m: '***',
+        frozen: false
+      }
+      ]
     }
   },
   methods: {
-    addNewCard(){
+    addNewCard() {
       let newCard = {
-        number: this.number,
-        date: Date.now()
+        number: '1111 1111 1111 1111',
+        number_m: '**** **** **** 1111',
+        holder: 'Mark Henry',
+        expiry: '12/25',
+        cvv: '007',
+        cvv_m: '***',
+        frozen: false
       };
       this.cards.unshift(newCard);
-      //this.newCardContent = '';
     },
-    deleteCard(card){
+    deleteCard(card) {
       let cardToDelete = card.number
       let index = this.cards.findIndex(card => card.number === cardToDelete);
       this.cards.splice(index, 1);

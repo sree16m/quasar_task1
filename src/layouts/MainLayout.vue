@@ -34,7 +34,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-tabs v-model="tab" class="bg-white text-grey-4">
-            <q-tab v-for="link in links" :key="link.text" :icon="link.tabicon" :label="link.text"></q-tab>
+            <q-tab v-for="link in links" :key="link.text" :icon="link.tabicon" :label="link.text" class="q-px-xs q-py-xs"></q-tab>
           </q-tabs>
         </q-toolbar-title>
       </q-toolbar>
@@ -78,4 +78,10 @@ export default {
 .caption
   opacity: 30%
   font-size: 14px
+
+.q-tab__label 
+  font-size: 12px 
+.q-tab__content img
+  width: 15px
+  height: 15px
 </style>

@@ -2,9 +2,14 @@
   <!--q-page class="flex flex-center q-page" -->
   <q-page class="q-pt-lg q-pl-xl q-pr-xl">
     <div class="row justify-between items-center">
-      <div class="col-12">Available balance</div>
+      <div class="col-12 gt-md">Available balance</div>
+      <div class="col-6 lt-md">Available balance</div>
+      <div class="col-6 lt-md text-right">
+        <img src="~assets/Logo1.svg">
+      </div>
       <h4>3,000</h4>
-      <q-btn color="primary" icon="img:icons/box.svg" label="New card" class="q-mb-lg" no-caps/>
+      <q-btn color="primary" icon="img:icons/box.svg" label="New card" class="gt-md" no-caps @click="addNewCard" />
+      <q-btn :flat="true" color="primary" icon="img:icons/box.svg" label="New card" class="lt-md" no-caps @click="addNewCard" />
     </div>
     <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
       narrow-indicator>
@@ -14,13 +19,16 @@
     <q-card class="q-mt-sm">
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="mails">
-          <div class="row">
+          <div class="row gt-md">
             <div class="col">
-              <q-toolbar>
-                <q-btn flat round dense icon="assignment_ind" />
-                <q-btn flat round dense icon="sim_card" class="q-mr-xs" />
-                <q-btn flat round dense icon="gamepad" />
-              </q-toolbar>
+              <q-card :bordered="true" v-for="card in cards" :key="card.number">
+                <q-card-section>
+                  <div>{{card.holder}}</div>
+                  <div>{{card.number_m}}</div>
+                  <div>{{card.expiry}}</div>
+                  <div>{{card.cvv_m}}</div>
+                </q-card-section>
+              </q-card>
               <q-space />
               <div class="toggles row justify-between text-center">
                 <q-item tag="label" class="col-auto">
@@ -76,6 +84,9 @@
               </q-expansion-item>
             </div>
           </div>
+          <div class="lt-md">
+
+          </div>
         </q-tab-panel>
         <q-tab-panel name="alarms">
           <div class="text-h6">Alarms</div>
@@ -98,7 +109,32 @@ export default {
       gpay: ref(true),
       replace: ref(true),
       cancel: ref(true),
-      tab: 'mails'
+      tab: 'mails',
+      newCard:'',
+      cards: [{
+        number: '1111 1111 1111 1111',
+        number_m: '**** **** **** 1111',
+        holder: 'Mark Henry',
+        expiry:'12/25',
+        cvv:'007',
+        cvv_m: '***',
+        frozen: false
+      }]
+    }
+  },
+  methods: {
+    addNewCard(){
+      let newCard = {
+        number: this.number,
+        date: Date.now()
+      };
+      this.cards.unshift(newCard);
+      //this.newCardContent = '';
+    },
+    deleteCard(card){
+      let cardToDelete = card.number
+      let index = this.cards.findIndex(card => card.number === cardToDelete);
+      this.cards.splice(index, 1);
     }
   }
 }
@@ -107,4 +143,12 @@ export default {
 .toggles .q-item__label
   font-size: 13px
   width: 70px
+
+@media only screen and (max-width: 600px)
+  body
+    background-color: #0C365A
+    color: #fff
+  .q-page
+    margin:10px
+    padding:0
 </style>
